@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthedUserContext } from "../../App";
 
 import { useParams } from "react-router-dom";
 
@@ -10,6 +11,12 @@ import styles from './HootDetails.module.css'
 
 export default function HootDetails(props) {
   const [hoot, setHoot] = useState(null);
+
+  // USING THE CONTEXT 
+  // return the user object into this component without passing props
+  // (note props are still basically passsed under the hood)
+  // loggedInUser value is the user store in the App.js state
+  const loggedInUser = useContext(AuthedUserContext)
 
   const { hootId } = useParams();
   console.log(hootId, "Hoot ID");
@@ -49,6 +56,10 @@ export default function HootDetails(props) {
         <p>{hoot.category.toUpperCase()}</p>
         <h1>{hoot.title}</h1>
         <p>{hoot.author.username}</p>
+
+		{/* {hootid is from the params (useParams)} */}
+		{hoot.author._id === loggedInUser._id ? <button onClick={() => props.handleDeleteHoot(hootId)}>Delete</button> : ''}
+
       </header>
       <p>{hoot.text}</p>
       <section>

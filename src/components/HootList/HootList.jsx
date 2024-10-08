@@ -5,8 +5,8 @@ import styles from "./HootList.module.css";
 export default function HootList({ hoots }) {
   const hootList = hoots.map((hoot) => {
     return (
-      <main className={styles.container}>
-        <Link key={hoot._id} to={`/hoots/${hoot._id}`}>
+      <main  key={hoot._id}className={styles.container}>
+        <Link to={`/hoots/${hoot._id}`}>
           <article>
             <header>
               <h2>{hoot.title}</h2>

@@ -13,6 +13,7 @@ import HootForm from './components/HootForm/HootForm';
 import * as hootService from '../src/services/hootService'
 import * as authService from '../src/services/authService'; // import the authservice
 
+// creates a global state
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
@@ -36,6 +37,17 @@ const App = () => {
       setHoots([newHoot, ...hoots])
       //navigate to the index page after we create
       navigate('/hoots'); // go to the <Route path='/hoots'>etc... 
+  }
+
+  async function handleDeleteHoot(hootId){
+    const response = await hootService.deleteHoot(hootId)
+    // remove the hoot from hoots state
+
+    // filter is saying, for every hoot in the array 
+    // return that hoot to the new array we are creating (Filter returns a new array)
+    // whose hoot._id does not equal the hootId of the element we just deleted!
+    setHoots(hoots.filter((hoot) => hoot._id != hootId))
+    navigate('/hoots')
   }
 
   useEffect(() => {
@@ -65,7 +77,7 @@ const App = () => {
             <Route path="/" element={<Dashboard user={user} />} />
             <Route path='/hoots' element={<HootList hoots={hoots} />} /> 
             <Route path='/hoots/new' element={<HootForm handleAddHoot={handleAddHoot}/>} />
-            <Route path='/hoots/:hootId' element={<HootDetails />} />
+            <Route path='/hoots/:hootId' element={<HootDetails handleDeleteHoot={handleDeleteHoot}/>} />
             </>
           ) : (
             // not logged in!

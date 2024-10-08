@@ -72,4 +72,18 @@ async function createComment(hootId, commentFormData) {
   }
 }
 
-export { index, show, create, createComment };
+async function deleteHoot(hootId) {
+  try {
+    const response = await fetch(`${BASE_URL}/${hootId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+
+	const data = await response.json()
+	return data
+  } catch (err) {
+    console.log(err, " <- err in deleteHoot");
+  }
+}
+
+export { index, show, create, createComment, deleteHoot };
