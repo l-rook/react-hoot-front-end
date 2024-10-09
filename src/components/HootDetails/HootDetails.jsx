@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthedUserContext } from "../../App";
 
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import CommentForm from "../CommentForm/CommentForm";
 
@@ -38,8 +38,8 @@ export default function HootDetails(props) {
 
   // lift the commentFormData from the comment form
   async function handleAddComment(commentFormData){
-	const newComment = await hootService.createComment(hootId, commentFormData)
-	setHoot(hootDoc)
+	const newHootDoc = await hootService.createComment(hootId, commentFormData)
+	setHoot(newHootDoc)
 	// // copy the hoot object
 	// // selecting the comments property
 	// // copying all the comments that are already in the comments property (...hoot.comments)
@@ -59,7 +59,7 @@ export default function HootDetails(props) {
 
 		{/* {hootid is from the params (useParams)} */}
 		{hoot.author._id === loggedInUser._id ? <button onClick={() => props.handleDeleteHoot(hootId)}>Delete</button> : ''}
-
+		{hoot.author._id === loggedInUser._id ? <Link to={`/hoots/${hootId}/edit`}>Edit</Link> : ''}
       </header>
       <p>{hoot.text}</p>
       <section>

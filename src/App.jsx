@@ -50,6 +50,31 @@ const App = () => {
     navigate('/hoots')
   }
 
+  async function handleUpdateHoot(hootId, hootFormData){
+    const updatedHoot = await hootService.update(hootId, hootFormData)
+
+    // update state with the new hoot! 
+    // replace the old hoot with the updateHoot object in our hoots aray
+    // single line arrow functions have implicit return statements
+    setHoots(hoots.map((hoot) => (hootId === hoot._id ? updatedHoot : hoot)))
+
+    // =========================================
+    // not a single line example
+    // this the same as the single line setHoots above
+    // const newHootStateArray = hoots.map((hoot) => {
+    //   if(hootId === hoot._id){
+    //     return updatedHoot
+    //   } else {
+    //     return hoot
+    //   }
+    // })
+
+    // setHoots(newHootStateArray)
+    // ====================================================
+    // navigate to details page
+    navigate(`/hoots/${hootId}`)
+  }
+
   useEffect(() => {
 
     async function fetchAllHoot(){
@@ -78,6 +103,7 @@ const App = () => {
             <Route path='/hoots' element={<HootList hoots={hoots} />} /> 
             <Route path='/hoots/new' element={<HootForm handleAddHoot={handleAddHoot}/>} />
             <Route path='/hoots/:hootId' element={<HootDetails handleDeleteHoot={handleDeleteHoot}/>} />
+            <Route path='/hoots/:hootId/edit' element={<HootForm handleUpdateHoot={handleUpdateHoot} />}/>
             </>
           ) : (
             // not logged in!
